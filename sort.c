@@ -31,6 +31,51 @@ size_t Size(void* ptr)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+	int n1 = m - l + 1;
+	int n2 = r - m;
+
+    // memory for temp arrays
+    int *L = (int *)Alloc(sizeof(int) * n1);
+    int *R = (int *)Alloc(sizeof(int) * n2);
+
+    // data to temporary arrays
+    for (int i = 0; i < n1; i++)
+        L[i] = pData[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = pData[m + 1 + j];
+
+    // merge temp arrays 
+    int i = 0; 
+    int j = 0; 
+    int k = l; 
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            pData[k] = L[i];
+            i++;
+        } else {
+            pData[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    // copy the remaining elements of L[]
+    while (i < n1) {
+        pData[k] = L[i];
+        i++;
+        k++;
+    }
+
+    // copy the remaining elements of R[]
+    while (j < n2) {
+        pData[k] = R[j];
+        j++;
+        k++;
+    }
+
+    // deallocate mem of temp arrays
+    DeAlloc(L);
+    DeAlloc(R);
 }
 
 // parses input file to an integer array
